@@ -2,57 +2,68 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Agent Test Mağazası</title>
+    <title>AI Agent Multi-Product Test Mağazası</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 50px; background-color: #f4f4f9; }
-        .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: inline-block; width: 300px; }
-        .price-box { font-size: 32px; color: #e44d26; font-weight: bold; margin: 20px 0; }
-        #stok-durumu { font-weight: bold; color: #d9534f; }
-        button { background-color: #5cb85c; color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f0f2f5; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 50px; }
+        .product-card { background: white; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); padding: 20px; width: 250px; text-align: center; border: 2px solid transparent; }
+        .product-card.discounted { border-color: #28a745; background-color: #f8fff9; }
+        .price { font-size: 24px; font-weight: bold; color: #333; margin: 10px 0; }
+        .discount-price { color: #d9534f; }
+        .status { font-weight: bold; margin-bottom: 15px; }
+        button { background-color: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; width: 100%; }
         button:disabled { background-color: #ccc; cursor: not-allowed; }
-        .timer { font-size: 14px; color: #888; margin-top: 15px; }
+        .timer { font-size: 12px; color: #777; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h2>Akıllı Saat X100</h2>
-        <p>Durum: <span id="stok-durumu">Stokta Yok</span></p>
-        <div class="price-box"><span id="fiyat">1500</span> TL</div>
-        
-        <button id="buy-btn" onclick="satinAl()" disabled>Satın Al</button>
-        
-        <div class="timer" id="timer-text">İndirime kalan süre: <span id="countdown">15</span> saniye</div>
+    <div class="product-card" id="card-1">
+        <h3>Akıllı Saat</h3>
+        <p class="status" id="stok-1">Stokta Yok</p>
+        <div class="price" id="fiyat-1">1500 TL</div>
+        <button id="btn-1" disabled>Satın Al</button>
+        <div class="timer" id="timer-1">İndirime: 10s</div>
+    </div>
+
+    <div class="product-card" id="card-2">
+        <h3>Akıllı Telefon</h3>
+        <p class="status" id="stok-2">Stokta Yok</p>
+        <div class="price" id="fiyat-2">25000 TL</div>
+        <button id="btn-2" disabled>Satın Al</button>
+        <div class="timer" id="timer-2">İndirime: 20s</div>
+    </div>
+
+    <div class="product-card" id="card-3">
+        <h3>Kulaklık</h3>
+        <p class="status" id="stok-3">Stokta Yok</p>
+        <div class="price" id="fiyat-3">3000 TL</div>
+        <button id="btn-3" disabled>Satın Al</button>
+        <div class="timer" id="timer-3">İndirime: 30s</div>
     </div>
 
     <script>
-        let saniye = 15;
-        const countdownDisplay = document.getElementById('countdown');
-        const fiyatDisplay = document.getElementById('fiyat');
-        const stokDisplay = document.getElementById('stok-durumu');
-        const buton = document.getElementById('buy-btn');
-        const timerText = document.getElementById('timer-text');
-
-        // Geri sayım sayacı
-        const sayac = setInterval(() => {
-            saniye--;
-            countdownDisplay.innerText = saniye;
-
-            if (saniye <= 0) {
-                // İNDİRİM VE STOK GÜNCELLEMESİ
-                fiyatDisplay.innerText = "900";
-                stokDisplay.innerText = "Stokta Var!";
-                stokDisplay.style.color = "#5cb85c";
-                buton.disabled = false;
-                timerText.innerText = "🔥 BÜYÜK İNDİRİM BAŞLADI! 🔥";
-                
-                console.log("AI Agent için veri güncellendi: Fiyat 900 TL, Stok VAR.");
-                clearInterval(sayac);
-            }
-        }, 1000);
-
-        function satinAl() {
-            alert("TEBRİKLER! AI Agent başarıyla satın alma sayfasına yönlendirdi.");
+        function setupProduct(id, originalPrice, discountPrice, seconds) {
+            let timeLeft = seconds;
+            const interval = setInterval(() => {
+                timeLeft--;
+                document.getElementById(`timer-${id}`).innerText = `İndirime: ${timeLeft}s`;
+                if (timeLeft <= 0) {
+                    document.getElementById(`fiyat-${id}`).innerText = discountPrice + " TL";
+                    document.getElementById(`fiyat-${id}`).classList.add('discount-price');
+                    document.getElementById(`stok-${id}`).innerText = "Stokta Var!";
+                    document.getElementById(`stok-${id}`).style.color = "green";
+                    document.getElementById(`btn-${id}`).disabled = false;
+                    document.getElementById(`card-${id}`).classList.add('discounted');
+                    document.getElementById(`timer-${id}`).innerText = "İNDİRİM AKTİF!";
+                    clearInterval(interval);
+                }
+            }, 1000);
         }
+
+        // Ürünleri başlat: ID, Normal Fiyat, İndirimli Fiyat, Saniye
+        setupProduct(1, 1500, 900, 10);
+        setupProduct(2, 25000, 18000, 20);
+        setupProduct(3, 3000, 2100, 30);
     </script>
+</body>
+</html>
