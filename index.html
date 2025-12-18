@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Agent Test Market</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 50px; }
+        .price-box { font-size: 24px; color: #e44d26; font-weight: bold; }
+        #buy-btn:disabled { background-color: #ccc; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <h1>Proje Test Ürünü: Akıllı Saat</h1>
+    <p>Durum: <span id="stok-durumu">Stokta Yok</span></p>
+    <div class="price-box">Fiyat: <span id="fiyat">1500</span> TL</div>
+    <br>
+    <button id="buy-btn" onclick="alert('Satın alma sayfasına yönlendiriliyorsunuz...')" disabled style="padding: 10px 20px;">Satın Al</button>
+
+    <script>
+        // Bu script, sayfayı açtıktan 15 saniye sonra indirim yapar (Test için)
+        setTimeout(() => {
+            document.getElementById('fiyat').innerText = "900";
+            document.getElementById('stok-durumu').innerText = "Stokta Var!";
+            document.getElementById('buy-btn').disabled = false;
+            document.getElementById('stok-durumu').style.color = "green";
+        }, 15000);
+    </script>
+</body>
+</html>
