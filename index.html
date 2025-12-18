@@ -2,28 +2,57 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>AI Agent Test Market</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Test Mağazası</title>
     <style>
-        body { font-family: sans-serif; text-align: center; padding: 50px; }
-        .price-box { font-size: 24px; color: #e44d26; font-weight: bold; }
-        #buy-btn:disabled { background-color: #ccc; cursor: not-allowed; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 50px; background-color: #f4f4f9; }
+        .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: inline-block; width: 300px; }
+        .price-box { font-size: 32px; color: #e44d26; font-weight: bold; margin: 20px 0; }
+        #stok-durumu { font-weight: bold; color: #d9534f; }
+        button { background-color: #5cb85c; color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+        button:disabled { background-color: #ccc; cursor: not-allowed; }
+        .timer { font-size: 14px; color: #888; margin-top: 15px; }
     </style>
 </head>
 <body>
-    <h1>Proje Test Ürünü: Akıllı Saat</h1>
-    <p>Durum: <span id="stok-durumu">Stokta Yok</span></p>
-    <div class="price-box">Fiyat: <span id="fiyat">1500</span> TL</div>
-    <br>
-    <button id="buy-btn" onclick="alert('Satın alma sayfasına yönlendiriliyorsunuz...')" disabled style="padding: 10px 20px;">Satın Al</button>
+
+    <div class="card">
+        <h2>Akıllı Saat X100</h2>
+        <p>Durum: <span id="stok-durumu">Stokta Yok</span></p>
+        <div class="price-box"><span id="fiyat">1500</span> TL</div>
+        
+        <button id="buy-btn" onclick="satinAl()" disabled>Satın Al</button>
+        
+        <div class="timer" id="timer-text">İndirime kalan süre: <span id="countdown">15</span> saniye</div>
+    </div>
 
     <script>
-        // Bu script, sayfayı açtıktan 15 saniye sonra indirim yapar (Test için)
-        setTimeout(() => {
-            document.getElementById('fiyat').innerText = "900";
-            document.getElementById('stok-durumu').innerText = "Stokta Var!";
-            document.getElementById('buy-btn').disabled = false;
-            document.getElementById('stok-durumu').style.color = "green";
-        }, 15000);
+        let saniye = 15;
+        const countdownDisplay = document.getElementById('countdown');
+        const fiyatDisplay = document.getElementById('fiyat');
+        const stokDisplay = document.getElementById('stok-durumu');
+        const buton = document.getElementById('buy-btn');
+        const timerText = document.getElementById('timer-text');
+
+        // Geri sayım sayacı
+        const sayac = setInterval(() => {
+            saniye--;
+            countdownDisplay.innerText = saniye;
+
+            if (saniye <= 0) {
+                // İNDİRİM VE STOK GÜNCELLEMESİ
+                fiyatDisplay.innerText = "900";
+                stokDisplay.innerText = "Stokta Var!";
+                stokDisplay.style.color = "#5cb85c";
+                buton.disabled = false;
+                timerText.innerText = "🔥 BÜYÜK İNDİRİM BAŞLADI! 🔥";
+                
+                console.log("AI Agent için veri güncellendi: Fiyat 900 TL, Stok VAR.");
+                clearInterval(sayac);
+            }
+        }, 1000);
+
+        function satinAl() {
+            alert("TEBRİKLER! AI Agent başarıyla satın alma sayfasına yönlendirdi.");
+        }
     </script>
-</body>
-</html>
